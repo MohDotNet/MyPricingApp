@@ -15,3 +15,6 @@ If you a developer starting out with Kotlin and JetPack, please feel free to kee
 By no means is this perfect, i will be continuously Updating it.
 My next steps are to clean the code a bit, experiment with added a design pattern, etc.
 
+## Context
+This app was written in the South African Context.
+So Tax will be calculated at the current rate of 15% if one is registered as a vat vendor.
