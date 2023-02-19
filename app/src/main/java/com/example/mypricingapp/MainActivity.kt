@@ -64,6 +64,9 @@ fun PricingForm(){
             singleLine = true,
         )
 
+        /* TODO - CheckBox */
+        Checkbox(checked = false, onCheckedChange = {} )
+
         Button(
             onClick = {
                 priceService.CostAmount = priceTextField
