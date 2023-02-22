@@ -1,12 +1,11 @@
 package com.example.mypricingapp
 
-import android.graphics.Paint.Align
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +42,7 @@ fun PricingForm(){
     val priceService by remember {mutableStateOf(PricingService())} // due to state - we do not use priceService = PricingService()
     var priceTextField by remember {mutableStateOf("")}
     var markupTextField by remember {mutableStateOf("")}
+    var isInclusive by remember{mutableStateOf(false)}
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -64,10 +65,27 @@ fun PricingForm(){
             singleLine = true,
         )
 
-        /* TODO - CheckBox */
-        Checkbox(checked = false, onCheckedChange = {} )
+        Row(){
+            Checkbox(
+                checked = isInclusive,
+                onCheckedChange =
+                    {
+                        isInclusive = when {
+                            !isInclusive -> true
+                            else -> false
+                        }
+                    }
+            )
+            Text(
+                text = "Vat Inclusive",
+                textAlign = TextAlign.Center,
+            )
+        }
+        
 
         Button(
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.teal_700) ),
+
             onClick = {
                 priceService.CostAmount = priceTextField
                 priceService.MarkupPercentage = markupTextField
@@ -75,17 +93,21 @@ fun PricingForm(){
                 markupTextField = ""
             }
         ) {
-            Text(text = "Calculate")
+            Text(
+                text = "Calculate",
+                color = colorResource(id = R.color.white)
+            
+            )
         }
 
 
         Card(
             modifier = Modifier
-                .padding(25.dp)
+                .padding(10.dp)
                 .fillMaxSize(1f),
-            elevation = 25.dp) {
+            elevation = 10.dp) {
             Column(modifier = Modifier
-                .padding(15.dp))
+                .padding(10.dp))
             {
                 ResultCardHeader()
 
@@ -122,7 +144,8 @@ fun ItemCard(resultItem : ResultItemModel){
         Column() {
             Image(
                 modifier = Modifier
-                    .aspectRatio(1f)
+                    .width(75.dp)
+                    .height(75.dp)
                     .clip(CircleShape),
                     painter = resultItem.itemPicture,
                     contentDescription = resultItem.Description)
