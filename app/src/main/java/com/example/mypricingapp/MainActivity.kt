@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,35 +47,12 @@ fun PricingForm(){
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(10.dp)
+        .background(Color.Green)
+        .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        TextField(
-            label = {Text("Cost Amount")},
-            value = priceTextField,
-            onValueChange = {priceTextField = it},
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
-        )
 
-        TextField(
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            label = {Text("Markup %")},
-            value = markupTextField,
-            onValueChange = {markupTextField = it},
-            singleLine = true,
-        )
-
-        Button(
-            onClick = {
-                priceService.CostAmount = priceTextField
-                priceService.MarkupPercentage = markupTextField
-                priceTextField = ""
-                markupTextField = ""
-            }
-        ) {
-            Text(text = "Calculate")
-        }
 
 
         Card(
@@ -108,6 +87,46 @@ fun PricingForm(){
     }
 }
 
+@Composable
+fun InboxBox(priceService : PricingService,var priceTextField : String, markupTextField : String){
+    Card(
+        modifier = Modifier
+            .padding(10.dp),
+        shape = RoundedCornerShape(20.dp),
+        elevation = 15.dp){
+        TextField(
+            label = {Text("Cost Amount")},
+            value = priceTextField,
+            onValueChange = {priceTextField = it},
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp)) // This adds spacing between the TextFields
+
+        TextField(
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            label = {Text("Markup %")},
+            value = markupTextField,
+            shape = RoundedCornerShape(12.dp),
+            onValueChange = {markupTextField = it},
+            singleLine = true,
+        )
+
+        Button(
+            onClick = {
+                priceService.CostAmount = priceTextField
+                priceService.MarkupPercentage = markupTextField
+                priceTextField = ""
+                markupTextField = ""
+            }
+        ) {
+            Text(text = "Calculate")
+        }
+
+    }
+}
 
 @Composable
 fun ItemCard(resultItem : ResultItemModel){
